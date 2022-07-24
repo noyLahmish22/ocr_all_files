@@ -1,0 +1,15 @@
+pre-commit
+pytest
+uvicorn
+pytesseract
+fastapi
+scikit-image
+matplotlib
+pdf2image
+python-dateutil
+googletrans==3.1.0a0
+aspose-words
+anyio
+autocorrect
+python-multipart
+python-docx
