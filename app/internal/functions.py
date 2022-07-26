@@ -1,6 +1,6 @@
-from app.internal.functions.imageprocessing import box, srceen_image
-from app.internal import pytesseract
-from app.internal.pytesseract import Output
+from .imageprocessing  import box, srceen_image
+from app.pakages import pytesseract
+from app.pakages.pytesseract import Output
 from pdf2image import convert_from_path
 import csv
 import shutil
@@ -9,15 +9,16 @@ import docx
 from googletrans import Translator
 import aspose.words as aw
 import os
-from app.config.consts import path_dic_data, poppler_path, tessdata_dir_config
+from app.config import consts
 from autocorrect import Speller
-from app.internal.pytesseract import pytesseract
+from app.pakages.pytesseract import pytesseract
 
-pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract"
+# pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract"
 
 
 # for docker
-# pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+
 
 def get_text_from_files(fullpath, cwd, file, lang, test_flag, ex):
     """
@@ -36,17 +37,17 @@ def get_text_from_files(fullpath, cwd, file, lang, test_flag, ex):
         text = get_text_from_pdf(fullpath, cwd, lang)
     else:
         get_text_from_image(fullpath, cwd, lang)
-        with open(cwd + path_dic_data + 'result_text.txt', encoding='utf-8') as f:
+        with open(cwd + consts.path_dic_data + 'result_text.txt', encoding='utf-8') as f:
             lines = f.readlines()
         for data in lines:
             text += data
-        os.remove(cwd + path_dic_data + '/result_text.txt')
+        os.remove(cwd + consts.path_dic_data + '/result_text.txt')
     text = text.replace('-\n', '')
     if lang != 'heb':
         print("hee")
         text = translation(text)
-    for file in os.listdir(cwd + path_dic_data):
-        os.remove(cwd + path_dic_data + file)
+    for file in os.listdir(cwd + consts.path_dic_data):
+        os.remove(cwd + consts.path_dic_data + file)
 
     return text
 
@@ -76,12 +77,14 @@ def get_text_from_pdf(fullpath, cwd, lang):
     """
     get the path to the pdf file and return the text in it
     """
-    pages = convert_from_path(fullpath, 500, poppler_path=poppler_path)
+    #for docker
+    pages = convert_from_path(fullpath, 500)
+    # pages = convert_from_path(fullpath, 500, poppler_path=poppler_path)
     text = ''
     image_counter = 1
     for page in pages:
         filename = "page_" + str(image_counter) + ".jpg"
-        data_path = cwd + path_dic_data + filename
+        data_path = cwd + consts.path_dic_data + filename
         page.save(data_path, 'JPEG')
         image_counter = image_counter + 1
     filelimit = image_counter - 1
@@ -89,9 +92,9 @@ def get_text_from_pdf(fullpath, cwd, lang):
         filename = "page_" + str(i) + ".jpg"
         try:
             text += "page:" + filename + "data:" + str(
-                (pytesseract.image_to_string(cwd + path_dic_data + filename, lang=str(lang),
-                                             config=tessdata_dir_config)))
-            os.remove(cwd + path_dic_data + filename)
+                (pytesseract.image_to_string(cwd + consts.path_dic_data + filename, lang=str(lang),
+                                             config=consts.tessdata_dir_config)))
+            os.remove(cwd + consts.path_dic_data + filename)
         except Exception as e:
             print(e)
     return text
@@ -105,11 +108,11 @@ def get_text_from_image(fullpath, cwd, lang):
     box(path, cwd)
     # details= (pytesseract.image_to_data(fullpath,output_type=Output.DICT,
     #                                     config=tessdata_dir_config, lang=lang))
-    details = pytesseract.image_to_data(cwd + path_dic_data + r"\thresh.png", output_type=Output.DICT,
-                                        config=tessdata_dir_config, lang=lang)
+    details = pytesseract.image_to_data(cwd + consts.path_dic_data + r"\thresh.png", output_type=Output.DICT,
+                                        config=consts.tessdata_dir_config, lang=lang)
 
     total_boxes = len(details['text'])
-    threshold_img = cv2.imread(cwd + path_dic_data + r"\thresh.png")
+    threshold_img = cv2.imread(cwd + consts.path_dic_data + r"\thresh.png")
 
     for sequence_number in range(total_boxes):
         if int(details['conf'][sequence_number]) > 30:
@@ -139,7 +142,7 @@ def get_text_from_image(fullpath, cwd, lang):
             word_list = []
             line_num += 1
 
-    with open(cwd + path_dic_data + '/result_text.txt', 'w', newline="", encoding="utf-8") as file:
+    with open(cwd + consts.path_dic_data + '/result_text.txt', 'w', newline="", encoding="utf-8") as file:
         csv.writer(file, delimiter=" ").writerows(parse_text)
     return parse_text
 

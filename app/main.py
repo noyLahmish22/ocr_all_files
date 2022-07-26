@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI, File, UploadFile, Form
-from app.internal.functions.functions import get_text_from_files
-from app.config.consts import path_dic_data
+from internal.functions import get_text_from_files
+from config.consts import path_dic_data
 from PIL import Image
 
 app = FastAPI()

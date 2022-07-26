@@ -21,7 +21,7 @@ RUN pip3 install python-multipart
 RUN apt-get update
 RUN apt-get install poppler-utils -y
 
-COPY requirements.txt requirements.txt
+COPY app/requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 
@@ -29,4 +29,4 @@ RUN pip3 install -r requirements.txt
 COPY .. .
 
 ENTRYPOINT ["python3"]
-CMD ["deploy.py"]
+CMD ["app/deploy.py"]

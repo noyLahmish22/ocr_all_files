@@ -1,6 +1,6 @@
-tessdata_dir_config = r'--tessdata-dir "C:\Users\NOY-L\ArmyProject\pytesseract\app\tests\tessdata"'
+# tessdata_dir_config = r'--tessdata-dir "C:\Users\NOY-L\ArmyProject\pytesseract\app\tests\tessdata"'
 # for docker
-# tessdata_dir_config = r'--tessdata-dir "/app/tests/tessdata"'
+tessdata_dir_config = r'--tessdata-dir "/app/tests/tessdata"'
 
 options = "--psm 8 -c tessedit_char_whitelist=0123456789"
 
