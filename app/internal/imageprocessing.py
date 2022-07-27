@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import os
-from app.config import consts
+from .consts import path_dic_data
 
 
 def box(fullpath, cwd):
@@ -42,7 +42,7 @@ def box(fullpath, cwd):
             x, y, w, h = cv2.boundingRect(c)
             cv2.rectangle(image, (x, y), (x + w, y + h), (36, 255, 12), 3)
 
-    cv2.imwrite(cwd+consts.path_dic_data+'/thresh.png', thresh)
+    cv2.imwrite(cwd + path_dic_data + '/thresh.png', thresh)
     cv2.waitKey()
 
 
@@ -66,6 +66,6 @@ def srceen_image(fullpath):
     result = cv2.merge(result_planes)
     result_norm = cv2.merge(result_norm_planes)
 
-    cv2.imwrite(cwd + consts.path_dic_data + 'shadows_out.png', result)
-    cv2.imwrite(cwd + consts.path_dic_data + 'shadows_out_norm.png', result_norm)
-    return cwd + consts.path_dic_data + 'shadows_out.png'
+    cv2.imwrite(cwd + path_dic_data + 'shadows_out.png', result)
+    cv2.imwrite(cwd + path_dic_data + 'shadows_out_norm.png', result_norm)
+    return cwd + path_dic_data + 'shadows_out.png'

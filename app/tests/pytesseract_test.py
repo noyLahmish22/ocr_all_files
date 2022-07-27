@@ -10,22 +10,22 @@ from unittest import mock
 
 import pytest
 
-from app.pakages.pytesseract import ALTONotSupported
-from app.pakages.pytesseract import get_languages
-from app.pakages.pytesseract import get_tesseract_version
-from app.pakages.pytesseract import image_to_alto_xml
-from app.pakages.pytesseract import image_to_boxes
-from app.pakages.pytesseract import image_to_data
-from app.pakages.pytesseract import image_to_osd
-from app.pakages.pytesseract import image_to_pdf_or_hocr
-from app.pakages.pytesseract import image_to_string
-from app.pakages.pytesseract import Output
-from app.pakages.pytesseract import TesseractNotFoundError
-from app.pakages.pytesseract import TSVNotSupported
-from app.pakages.pytesseract import file_to_dict
-from app.pakages.pytesseract import numpy_installed
-from app.pakages.pytesseract import pandas_installed
-from app.pakages.pytesseract import prepare
+from app.internal.pakages import ALTONotSupported
+from app.internal.pakages import get_languages
+from app.internal.pakages import get_tesseract_version
+from app.internal.pakages import image_to_alto_xml
+from app.internal.pakages import image_to_boxes
+from app.internal.pakages import image_to_data
+from app.internal.pakages import image_to_osd
+from app.internal.pakages import image_to_pdf_or_hocr
+from app.internal.pakages import image_to_string
+from app.internal.pakages import Output
+from app.internal.pakages import TesseractNotFoundError
+from app.internal.pakages import TSVNotSupported
+from app.internal.pakages import file_to_dict
+from app.internal.pakages import numpy_installed
+from app.internal.pakages import pandas_installed
+from app.internal.pakages import prepare
 
 if numpy_installed:
     import numpy as np
@@ -340,7 +340,7 @@ def test_wrong_prepare_type(obj):
 )
 def test_wrong_tesseract_cmd(monkeypatch, test_file, test_path):
     """Test wrong or missing tesseract command."""
-    from app.pakages import pytesseract
+    from app.internal.pakages import pytesseract
 
     monkeypatch.setattr('pytesseract.pytesseract.tesseract_cmd', test_path)
 
@@ -392,7 +392,7 @@ def test_main_not_found_cases(
 )
 def test_proper_oserror_exception_handling(monkeypatch, test_file, test_path):
     """ "Test for bubbling up OSError exceptions."""
-    from app.pakages import pytesseract
+    from app.internal.pakages import pytesseract
 
     monkeypatch.setattr(
         'pytesseract.pytesseract.tesseract_cmd',
