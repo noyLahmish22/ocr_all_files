@@ -40,6 +40,6 @@ build:
 
 run:
   script:
-    docker fun -p 443:443 docker-python
+    docker run -p 443:443 docker-python
 
 
